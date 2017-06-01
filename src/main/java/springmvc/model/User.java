@@ -13,7 +13,30 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-
+	@Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;
+    
+	@Column(name="first_name")
+    private String firstName;
+    @Column(name="last_name")
+    private String lastName;
+    @Column(name="user_name")
+    private String userName;
+    @Column(name="email_id")
+    private String emailId;
+	private boolean enabled = true;
+    private String password;
+    
+    @ManyToOne
+    private UserRole userRole;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    private Student student;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    private Staff staff;
+    
 	
 	public User(String fname,String lname,String password, String email){
 		this.emailId = email;
@@ -58,28 +81,18 @@ public class User {
 		this.emailId = emailId;
 	}
 
-	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
-    
-	@Column(name="first_name")
-    private String firstName;
-    @Column(name="last_name")
-    private String lastName;
-    @Column(name="user_name")
-    private String userName;
-    @Column(name="email_id")
-    private String emailId;
+	
+    public Staff getStaff() {
+		return staff;
+	}
 
-    private String password;
-    
-    @ManyToOne
-    private UserRole userRole;
-    
-    @OneToOne(cascade = CascadeType.ALL)
-    private Student student;
-    
-    public Student getStudent() {
+
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+
+
+	public Student getStudent() {
 		return student;
 	}
 
@@ -96,9 +109,7 @@ public class User {
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
-
-	private boolean enabled = true;
-
+	
     public User()
     {
     }

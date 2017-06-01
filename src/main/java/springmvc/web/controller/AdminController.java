@@ -7,13 +7,16 @@ import java.util.List;
 import springmvc.model.AdditionalDepartmentFeilds;
 import springmvc.model.Department;
 import springmvc.model.Program;
+import springmvc.model.Staff;
 import springmvc.model.Student;
 import springmvc.model.User;
 import springmvc.model.UserRole;
 import springmvc.model.dao.DepartmentsDao;
 import springmvc.model.dao.ProgramDao;
+import springmvc.model.dao.StaffDao;
 import springmvc.model.dao.StudentDao;
 import springmvc.model.dao.UserDao;
+import springmvc.model.dao.jpa.StaffDaiImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +35,8 @@ import org.springframework.web.bind.support.SessionStatus;
 public class AdminController {
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private StaffDao staffDao;
 	@Autowired
 	private DepartmentsDao departmentsDao;
 	@Autowired
@@ -264,7 +269,7 @@ public class AdminController {
 				if (user.getUserRole().getId()== 3)
 					return "redirect:/admin.html";
 				else if (user.getUserRole().getId() == 2)
-					return "redirect:/staff.html";
+					return "redirect:/staff/staffhome.html?staffId="+user.getStaff().getId();
 				else
 					return "redirect:/student/studentHome.html?userId="+user.getId();	
 			}
@@ -290,12 +295,62 @@ public class AdminController {
 
 		return "managedepartments";
 	}
+	
+	@RequestMapping(value = "/ViewDepartment.html", method = RequestMethod.GET)
+	public String viewDepartment(HttpServletRequest request, ModelMap models) {
+		int deptId = Integer.parseInt(request.getParameter("deptId"));
+		Department dept = departmentsDao.getDepartmentById(deptId);
+
+		models.put("department", dept);
+
+		return "ViewDepartmentAdmin";
+	}
+	
+	@RequestMapping("admin/manageusers.html")
+    public String manageUsers( ModelMap models )
+    {
+		List<Staff> staffs = new ArrayList<>();
+		staffs = staffDao.getStaffs();
+		models.put("staffs", staffs);
+        return "/admin/manageusers";
+    }
+	
 	@RequestMapping(value = "/Register.html", method = RequestMethod.GET)
 	public String registerGet(HttpServletRequest request, ModelMap models) {
 		models.put("user", new User() );
 		
 		return "registration";
 	}
+	
+	@RequestMapping(value = "admin/addstaff.html", method = RequestMethod.GET)
+	public String addStaffGet(HttpServletRequest request, ModelMap models) {
+		models.put("departments", departmentsDao.getDepartments());
+    	models.put("user", new User() );
+        return "/staff/createStaff";
+    }
+	
+	@RequestMapping(value = "admin/addstaff.html", method = RequestMethod.POST)
+	public String addStaffPost(HttpServletRequest request,@ModelAttribute User user, ModelMap models) {
+		int deptId = Integer.parseInt(request.getParameter("deptId"));
+		Department dept = departmentsDao.getDepartmentById(deptId);
+		UserRole userRole = userDao.getUserRoleById(2);//staff
+		
+		Staff staff = new Staff();
+		staff.setEmailId(user.getEmailId());
+		staff.setFirstName( user.getFirstName());
+		staff.setLast_name(user.getLastName());
+		
+		user.setUserRole(userRole);
+		staff.setUser(user);
+		staff.setUserName(staff.getFirstName()+staff.getLast_name());
+		user.setStaff(staff);
+		staff.setDepartment(dept);
+		user = userDao.saveUser(user);
+		
+		return "redirect:/admin/manageusers.html";//?userId="+user.getId();
+	}
+	
+	
 	@RequestMapping(value = "/Register.html", method = RequestMethod.POST)
 	public String registerPost(HttpServletRequest request,@ModelAttribute User user, ModelMap models) {
 		
@@ -327,15 +382,5 @@ public class AdminController {
 		models.put("userId", user.getId());
 	
 		return "redirect:/student/studentHome.html";//?userId="+user.getId();
-	}
-	
-	@RequestMapping(value = "/ViewDepartment.html", method = RequestMethod.GET)
-	public String viewDepartment(HttpServletRequest request, ModelMap models) {
-		int deptId = Integer.parseInt(request.getParameter("deptId"));
-		Department dept = departmentsDao.getDepartmentById(deptId);
-
-		models.put("department", dept);
-
-		return "ViewDepartmentAdmin";
 	}
 }

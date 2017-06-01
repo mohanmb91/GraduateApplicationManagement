@@ -17,13 +17,11 @@
 </div>
 <div class="panel panel-default">
 <!-- Default panel contents -->
-<div class="panel-heading">Login</div>
+<div class="panel-heading"> Welcome ${username} ! <span style="float: right"><a href="logout.html"> Log Out</a></span></div>
 <div class="panel-body">
-	<a href="logout.html"> Log Out</a>
-	<br> Welcome ${username} !
 	<ul>
 		<li><a href="managedepartments.html">Manage Departments</a></li>
-		<li><a href="manageusers.html">Manage Users</a></li>
+		<li><a href="admin/manageusers.html">Manage Users</a></li>
 	</ul>
 </div>
 </div>

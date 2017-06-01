@@ -19,8 +19,7 @@ public interface DepartmentsDao {
 
 	void removeDepartment(Integer id);
 	
-	void removeAdditionalFeild(Integer id);
-	
+	void removeAdditionalFeild(Integer id);	
 	
 
 	}

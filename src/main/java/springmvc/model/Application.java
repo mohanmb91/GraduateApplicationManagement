@@ -21,7 +21,65 @@ public class Application {
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+	@Column(name="first_name")
+    private String firstName;
+
+	@Column(name = "last_name")
+	private String last_name;
     
+	@Column(name="user_name")
+    private String userName;
+	
+	@Column(name="email_id")
+    private String emailId;
+    
+	private String cin;
+    
+	@Column(name="phone_number")
+    private String phoneNumber;
+    
+    private String gender;
+    @Column(name="date_of_birth")
+    private String dateOfBirth;
+    
+    private String citizenship;
+    
+	
+	private boolean isSubmitted;
+	
+	private String term;
+
+	
+	@OneToMany(cascade = CascadeType.ALL)
+    private List<EducationBackground> educationBackgrounds;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    private StudentAcademics academics;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+	private List<AdditionalDepartmentfeildvalues> additionalDepartmentFeildValues;
+	
+	@ManyToOne
+	private Student student;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Program program;
+	
+	@ManyToOne
+	private Status status;
+    
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public void setSubmitted(boolean isSubmitted) {
+		this.isSubmitted = isSubmitted;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -94,42 +152,6 @@ public class Application {
 		this.citizenship = citizenship;
 	}
 
-	@Column(name="first_name")
-    private String firstName;
-
-	@Column(name = "last_name")
-	private String last_name;
-    
-	@Column(name="user_name")
-    private String userName;
-	
-	@Column(name="email_id")
-    private String emailId;
-    
-	private String cin;
-    
-	@Column(name="phone_number")
-    private String phoneNumber;
-    
-    private String gender;
-    @Column(name="date_of_birth")
-    private String dateOfBirth;
-    
-    private String citizenship;
-    
-	
-	private boolean isSubmitted;
-	
-	private String term;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-    private List<EducationBackground> educationBackgrounds;
-    
-    @OneToOne(cascade = CascadeType.ALL)
-    private StudentAcademics academics;
-    
-	
-
 	public boolean getIsSubmitted() {
 		return isSubmitted;
 	}
@@ -170,18 +192,6 @@ public class Application {
 		this.additionalDepartmentFeildValues = additionalDepartmentFeildValues;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<AdditionalDepartmentfeildvalues> additionalDepartmentFeildValues;
-	
-	@ManyToOne
-	private Student student;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Program program;
-	
-	@OneToMany
-	private List<StatusUpdate> statusHistory;
-
 	public Integer getId() {
 		return id;
 	}
@@ -206,14 +216,4 @@ public class Application {
 		this.program = program;
 	}
 
-	public List<StatusUpdate> getStatusHistory() {
-		return statusHistory;
-	}
-
-	public void setStatusHistory(List<StatusUpdate> statusHistory) {
-		this.statusHistory = statusHistory;
-	}
-	
-	
-	
 }

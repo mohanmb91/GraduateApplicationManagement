@@ -193,6 +193,7 @@ public class StudentController {
 		application.setStudent(student);
 		application.setIsSubmitted(false);
 		application.setProgram(program);
+		application.setStatus(applicationDao.getStatusById(1));
 		application=applicationDao.saveApplication(application);
 		if(application.getProgram().getDepartment().getRequirements().size() != 0){
 			List<AdditionalDepartmentfeildvalues> feildValues = application.getAdditionalDepartmentFeildValues();

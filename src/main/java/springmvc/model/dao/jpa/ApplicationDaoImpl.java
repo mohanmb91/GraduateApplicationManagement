@@ -22,6 +22,11 @@ public class ApplicationDaoImpl implements ApplicationDao{
 		            .getResultList();
 	    }
 
+	  @Override
+	  public List<Application> getApplicationsByProgId(int progId){
+		  return entityManager.createQuery( "from Application where Application.program.id = "+progId, Application.class )
+		            .getResultList();
+	  }
 	@Override
 	public Application getApplicationById(Integer id) {
 		return entityManager.find(Application.class,id );
@@ -39,5 +44,11 @@ public class ApplicationDaoImpl implements ApplicationDao{
 	public AdditionalDepartmentfeildvalues saveFieldValues(AdditionalDepartmentfeildvalues feildValue) {
 		// TODO Auto-generated method stub
 		return entityManager.merge(feildValue);
+	}
+
+	@Override
+	public Status getStatusById(Integer id) {
+		// TODO Auto-generated method stub
+		return entityManager.find(Status.class,id );
 	}
 }

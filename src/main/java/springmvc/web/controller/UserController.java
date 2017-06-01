@@ -19,5 +19,4 @@ public class UserController {
         models.put( "users", userDao.getUsers() );
         return "users";
     }
-
 }

@@ -74,7 +74,7 @@
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-						application submitted
+						application submitted and it is ${eachApplication.status.status}
 						</c:otherwise>
 						</c:choose>
 						

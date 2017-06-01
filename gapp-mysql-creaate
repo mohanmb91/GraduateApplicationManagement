@@ -46,6 +46,7 @@
         user_name varchar(255),
         academics_id integer,
         program_id integer,
+        status_id integer,
         student_id integer,
         primary key (id)
     );
@@ -58,11 +59,6 @@
     create table applications_education_background (
         applications_id integer not null,
         educationBackgrounds_id integer not null
-    );
-
-    create table applications_status_update (
-        applications_id integer not null,
-        statusHistory_id integer not null
     );
 
     create table departments (
@@ -99,12 +95,13 @@
         primary key (id)
     );
 
-    create table status_update (
+    create table staff_department (
         id integer not null auto_increment,
-        comment varchar(255),
-        time_changed datetime,
-        application_id integer,
-        currentStatus_id integer,
+        email_id varchar(255),
+        first_name varchar(255),
+        last_name varchar(255),
+        user_name varchar(255),
+        department_id integer,
         user_id integer,
         primary key (id)
     );
@@ -143,6 +140,7 @@
         last_name varchar(255),
         password varchar(255),
         user_name varchar(255),
+        staff_id integer,
         student_id integer,
         userRole_id integer,
         primary key (id)
@@ -153,9 +151,6 @@
 
     alter table applications_education_background 
         add constraint UK_h4vnu579w6geqc60qxov71mrt unique (educationBackgrounds_id);
-
-    alter table applications_status_update 
-        add constraint UK_p0n317mofj6sokqmy32i4ev35 unique (statusHistory_id);
 
     alter table departments_additional_department_feilds 
         add constraint UK_hpodnjet8tlefm7oyi83ljeuq unique (deptRequirements_id);
@@ -197,6 +192,12 @@
         references programs (id);
 
     alter table applications 
+        add index FK_bmuuaimvfefq39ypbc6y2itdu (status_id), 
+        add constraint FK_bmuuaimvfefq39ypbc6y2itdu 
+        foreign key (status_id) 
+        references application_status (id);
+
+    alter table applications 
         add index FK_bjc0uvubm2oywqk7gpgdqigt1 (student_id), 
         add constraint FK_bjc0uvubm2oywqk7gpgdqigt1 
         foreign key (student_id) 
@@ -223,18 +224,6 @@
     alter table applications_education_background 
         add index FK_m4hwf9lra4qonvwspyao144r2 (applications_id), 
         add constraint FK_m4hwf9lra4qonvwspyao144r2 
-        foreign key (applications_id) 
-        references applications (id);
-
-    alter table applications_status_update 
-        add index FK_p0n317mofj6sokqmy32i4ev35 (statusHistory_id), 
-        add constraint FK_p0n317mofj6sokqmy32i4ev35 
-        foreign key (statusHistory_id) 
-        references status_update (id);
-
-    alter table applications_status_update 
-        add index FK_5pgqeyasb37pxfe1au9bqjfod (applications_id), 
-        add constraint FK_5pgqeyasb37pxfe1au9bqjfod 
         foreign key (applications_id) 
         references applications (id);
 
@@ -268,21 +257,15 @@
         foreign key (department_id) 
         references departments (id);
 
-    alter table status_update 
-        add index FK_qujt4uvkb6svrqpw9kgwx3i3u (application_id), 
-        add constraint FK_qujt4uvkb6svrqpw9kgwx3i3u 
-        foreign key (application_id) 
-        references applications (id);
+    alter table staff_department 
+        add index FK_2h1acl7j27lkj92b6vv0nl2b1 (department_id), 
+        add constraint FK_2h1acl7j27lkj92b6vv0nl2b1 
+        foreign key (department_id) 
+        references departments (id);
 
-    alter table status_update 
-        add index FK_7pfsrgtubeautp2itt7lax3sr (currentStatus_id), 
-        add constraint FK_7pfsrgtubeautp2itt7lax3sr 
-        foreign key (currentStatus_id) 
-        references application_status (id);
-
-    alter table status_update 
-        add index FK_42uds9vyjqjboer2i4pwjsq3p (user_id), 
-        add constraint FK_42uds9vyjqjboer2i4pwjsq3p 
+    alter table staff_department 
+        add index FK_my2tvmfr21oj7sj87gn5c9pq1 (user_id), 
+        add constraint FK_my2tvmfr21oj7sj87gn5c9pq1 
         foreign key (user_id) 
         references users (id);
 
@@ -303,6 +286,12 @@
         add constraint FK_hecpbi1tgo32hmu1q5ih2te0 
         foreign key (students_id) 
         references students (id);
+
+    alter table users 
+        add index FK_hijqejqge8g6evxs6j44rny9k (staff_id), 
+        add constraint FK_hijqejqge8g6evxs6j44rny9k 
+        foreign key (staff_id) 
+        references staff_department (id);
 
     alter table users 
         add index FK_qh3otyipv2k9hqte4a1abcyhq (student_id), 

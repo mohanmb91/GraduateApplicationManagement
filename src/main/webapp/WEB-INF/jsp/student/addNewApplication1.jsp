@@ -63,9 +63,9 @@
 		  <label for="term">Term:</label>
 		  <select id="term" name="term" class="form-control" required="required">
 		  <option selected disabled class="form-control"></option>
-		  <option class="form-control" value="Fall 2016">Fall 2016</option>
-		  <option class="form-control" value="Spring 2017">Spring 2017</option>
 		  <option class="form-control" value="Fall 2017">Fall 2017</option>
+		  <option class="form-control" value="Spring 2018">Spring 2018</option>
+		  <option class="form-control" value="Fall 2018">Fall 2018</option>
 		  </select>
 	</div>
 	<div class="panel panel-default">
